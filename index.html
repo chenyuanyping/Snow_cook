@@ -27,9 +27,6 @@
                 <div class="cart-items" id="cartItems">
                     <!-- 购物车项目将动态添加 -->
                 </div>
-                <div class="cart-total">
-                    <strong>总计: ¥<span id="totalPrice">0</span></strong>
-                </div>
                 <button class="submit-btn" id="submitOrder">提交订单</button>
             </section>
         </main>
@@ -40,7 +37,6 @@
                 <span class="close" id="closeModal">&times;</span>
                 <h3 id="modalDishName"></h3>
                 <p id="modalDishDesc"></p>
-                <p class="price">¥<span id="modalDishPrice"></span></p>
                 
                 <div class="notes-section">
                     <label for="dishNotes">备注:</label>
@@ -72,8 +68,6 @@
                 <h3>订单确认</h3>
                 <div id="orderSummary"></div>
                 <div class="customer-info">
-                    <input type="text" id="customerName" placeholder="姓名" required>
-                    <input type="tel" id="customerPhone" placeholder="电话号码" required>
                     <textarea id="orderNotes" placeholder="订单备注..."></textarea>
                 </div>
                 <button class="confirm-order-btn" id="confirmOrder">确认订单</button>

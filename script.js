@@ -4,56 +4,48 @@ const menuData = [
         id: 1,
         name: "宫保鸡丁",
         description: "经典川菜，鸡肉嫩滑，花生酥脆，酸甜微辣",
-        price: 2,
         category: "热菜"
     },
     {
         id: 2,
         name: "麻婆豆腐",
         description: "四川名菜，豆腐嫩滑，麻辣鲜香",
-        price: 3,
         category: "热菜"
     },
     {
         id: 3,
         name: "糖醋排骨",
         description: "酸甜可口，肉质鲜美，老少皆宜",
-        price: 35,
         category: "热菜"
     },
     {
         id: 4,
         name: "蒸蛋羹",
         description: "嫩滑如丝，营养丰富，适合老人小孩",
-        price: 15,
         category: "汤品"
     },
     {
         id: 5,
         name: "白切鸡",
         description: "清淡爽口，肉质鲜嫩，配特制蘸料",
-        price: 32,
         category: "凉菜"
     },
     {
         id: 6,
         name: "西红柿鸡蛋汤",
         description: "清爽开胃，营养搭配，家常美味",
-        price: 18,
         category: "汤品"
     },
     {
         id: 7,
         name: "红烧肉",
         description: "肥瘦相间，色泽红润，入口即化",
-        price: 38,
         category: "热菜"
     },
     {
         id: 8,
         name: "凉拌黄瓜",
         description: "清脆爽口，解腥去腻，开胃小菜",
-        price: 12,
         category: "凉菜"
     }
 ];
@@ -87,8 +79,6 @@ const addToCart = document.getElementById('addToCart');
 
 // 订单模态框元素
 const orderSummary = document.getElementById('orderSummary');
-const customerName = document.getElementById('customerName');
-const customerPhone = document.getElementById('customerPhone');
 const orderNotes = document.getElementById('orderNotes');
 const confirmOrder = document.getElementById('confirmOrder');
 
@@ -111,7 +101,6 @@ function renderMenu() {
         menuItem.innerHTML = `
             <h3>${dish.name}</h3>
             <p class="description">${dish.description}</p>
-            <p class="price">¥${dish.price}</p>
         `;
         menuItem.addEventListener('click', () => openDishModal(dish));
         menuGrid.appendChild(menuItem);
@@ -123,7 +112,6 @@ function openDishModal(dish) {
     currentDish = dish;
     modalDishName.textContent = dish.name;
     modalDishDesc.textContent = dish.description;
-    modalDishPrice.textContent = dish.price;
     
     // 重置表单
     dishNotes.value = '';
@@ -155,8 +143,7 @@ function addDishToCart() {
         dish: currentDish,
         quantity: parseInt(quantity.textContent),
         notes: dishNotes.value.trim(),
-        shareLink: shareLinks.value.trim(),
-        totalPrice: currentDish.price * parseInt(quantity.textContent)
+        shareLink: shareLinks.value.trim()
     };
     
     cart.push(cartItem);
@@ -178,13 +165,11 @@ function renderCart() {
     if (cart.length === 0) {
         cartItems.innerHTML = '<div class="empty-cart">购物车为空</div>';
         cartCount.textContent = '(0)';
-        totalPrice.textContent = '0';
         submitOrder.disabled = true;
         return;
     }
     
     cartItems.innerHTML = '';
-    let total = 0;
     
     cart.forEach(item => {
         const cartItem = document.createElement('div');
@@ -203,20 +188,17 @@ function renderCart() {
         cartItem.innerHTML = `
             <div class="cart-item-header">
                 <span class="cart-item-name">${item.dish.name}</span>
-                <span class="cart-item-price">¥${item.totalPrice}</span>
             </div>
-            <div class="cart-item-details">数量: ${item.quantity} | 单价: ¥${item.dish.price}</div>
+            <div class="cart-item-details">数量: ${item.quantity}</div>
             ${notesHtml}
             ${linksHtml}
             <button class="remove-item" onclick="removeFromCart(${item.id})">删除</button>
         `;
         
         cartItems.appendChild(cartItem);
-        total += item.totalPrice;
     });
     
     cartCount.textContent = `(${cart.length})`;
-    totalPrice.textContent = total.toFixed(2);
     submitOrder.disabled = false;
 }
 
@@ -250,25 +232,20 @@ function openOrderModal() {
     
     // 生成订单摘要
     let summaryHtml = '<h4>订单详情:</h4>';
-    let total = 0;
     
     cart.forEach(item => {
         summaryHtml += `
             <div style="margin-bottom: 10px; padding: 8px; background: #f0f0f0; border-radius: 4px;">
-                <strong>${item.dish.name}</strong> × ${item.quantity} = ¥${item.totalPrice}
+                <strong>${item.dish.name}</strong> × ${item.quantity}
                 ${item.notes ? `<br><small>备注: ${item.notes}</small>` : ''}
                 ${item.shareLink ? `<br><small>分享: <a href="${item.shareLink}" target="_blank">链接</a></small>` : ''}
             </div>
         `;
-        total += item.totalPrice;
     });
     
-    summaryHtml += `<div style="text-align: right; font-weight: bold; font-size: 18px; margin-top: 10px;">总计: ¥${total.toFixed(2)}</div>`;
     orderSummary.innerHTML = summaryHtml;
     
-    // 清空客户信息表单
-    customerName.value = '';
-    customerPhone.value = '';
+    // 清空订单备注
     orderNotes.value = '';
     
     orderModal.style.display = 'block';
@@ -276,45 +253,35 @@ function openOrderModal() {
 
 // 确认订单
 function submitOrderData() {
-    const name = customerName.value.trim();
-    const phone = customerPhone.value.trim();
-    
-    if (!name || !phone) {
-        alert('请填写姓名和电话号码');
-        return;
-    }
-    
     // 构建订单数据
     const orderData = {
         timestamp: new Date().toLocaleString('zh-CN'),
-        customer: {
-            name: name,
-            phone: phone
-        },
         items: cart.map(item => ({
             dishName: item.dish.name,
             quantity: item.quantity,
-            unitPrice: item.dish.price,
-            totalPrice: item.totalPrice,
             notes: item.notes,
             shareLink: item.shareLink
         })),
-        orderNotes: orderNotes.value.trim(),
-        totalAmount: cart.reduce((sum, item) => sum + item.totalPrice, 0)
+        orderNotes: orderNotes.value.trim()
     };
+    
+    // 保存到本地存储
+    const existingOrders = JSON.parse(localStorage.getItem('orderHistory')) || [];
+    existingOrders.push(orderData);
+    localStorage.setItem('orderHistory', JSON.stringify(existingOrders));
     
     // 这里可以发送订单到服务器
     console.log('订单数据:', orderData);
     
     // 模拟订单提交成功
-    alert(`订单提交成功！\n订单号: ${Date.now()}\n客户: ${name}\n总金额: ¥${orderData.totalAmount}`);
+    alert(`订单提交成功！\n订单号: ${Date.now()}\n已保存到页面！`);
     
     // 清空购物车
     cart = [];
     renderCart();
     closeModals();
     
-    showSuccessMessage('订单提交成功！感谢您的订购。');
+    showSuccessMessage('订单提交成功！已保存到页面。');
 }
 
 // 设置事件监听器
