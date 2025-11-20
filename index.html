@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点菜小程序</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🍽️ 点菜小程序</h1>
+        </header>
+
+        <main class="main">
+            <!-- 菜单区域 -->
+            <section class="menu-section">
+                <h2>菜单</h2>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- 菜品将通过JavaScript动态加载 -->
+                </div>
+            </section>
+
+            <!-- 购物车区域 -->
+            <section class="cart-section">
+                <h2>购物车 <span id="cartCount">(0)</span></h2>
+                <div class="cart-items" id="cartItems">
+                    <!-- 购物车项目将动态添加 -->
+                </div>
+                <div class="cart-total">
+                    <strong>总计: ¥<span id="totalPrice">0</span></strong>
+                </div>
+                <button class="submit-btn" id="submitOrder">提交订单</button>
+            </section>
+        </main>
+
+        <!-- 菜品详情模态框 -->
+        <div class="modal" id="dishModal">
+            <div class="modal-content">
+                <span class="close" id="closeModal">&times;</span>
+                <h3 id="modalDishName"></h3>
+                <p id="modalDishDesc"></p>
+                <p class="price">¥<span id="modalDishPrice"></span></p>
+                
+                <div class="notes-section">
+                    <label for="dishNotes">备注:</label>
+                    <textarea id="dishNotes" placeholder="请输入特殊要求或备注..."></textarea>
+                </div>
+                
+                <div class="links-section">
+                    <label for="shareLinks">分享链接 (如抖音等):</label>
+                    <input type="url" id="shareLinks" placeholder="https://...">
+                </div>
+                
+                <div class="quantity-section">
+                    <label>数量:</label>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" id="decreaseQty">-</button>
+                        <span id="quantity">1</span>
+                        <button class="qty-btn" id="increaseQty">+</button>
+                    </div>
+                </div>
+                
+                <button class="add-to-cart-btn" id="addToCart">加入购物车</button>
+            </div>
+        </div>
+
+        <!-- 订单确认模态框 -->
+        <div class="modal" id="orderModal">
+            <div class="modal-content">
+                <span class="close" id="closeOrderModal">&times;</span>
+                <h3>订单确认</h3>
+                <div id="orderSummary"></div>
+                <div class="customer-info">
+                    <input type="text" id="customerName" placeholder="姓名" required>
+                    <input type="tel" id="customerPhone" placeholder="电话号码" required>
+                    <textarea id="orderNotes" placeholder="订单备注..."></textarea>
+                </div>
+                <button class="confirm-order-btn" id="confirmOrder">确认订单</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
