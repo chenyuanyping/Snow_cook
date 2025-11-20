@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>点菜小程序</title>
+    <title>Today Eat What</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>🍽️ 点菜小程序</h1>
+            <h1>🍽️ Today Eat What</h1>
         </header>
 
         <main class="main">
@@ -71,6 +71,38 @@
                     <textarea id="orderNotes" placeholder="订单备注..."></textarea>
                 </div>
                 <button class="confirm-order-btn" id="confirmOrder">确认订单</button>
+            </div>
+        </div>
+
+        <!-- Snow 大厨 Cook 界面 -->
+        <div class="cook-screen" id="cookScreen">
+            <div class="cook-container">
+                <div class="chef-animation">
+                    <div class="chef-hat">👨‍🍳</div>
+                    <div class="sparkles">
+                        <span class="sparkle">✨</span>
+                        <span class="sparkle">🌟</span>
+                        <span class="sparkle">💫</span>
+                        <span class="sparkle">⭐</span>
+                        <span class="sparkle">🎇</span>
+                    </div>
+                </div>
+                <h1 class="cook-title">Snow 大厨开始 Cook...</h1>
+                <div class="cooking-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="cooking-text">正在精心制作您的美食 💕</p>
+                </div>
+                <div class="heart-rain">
+                    <span class="heart">💖</span>
+                    <span class="heart">💝</span>
+                    <span class="heart">💗</span>
+                    <span class="heart">💓</span>
+                    <span class="heart">💕</span>
+                    <span class="heart">💘</span>
+                </div>
+                <button class="back-to-menu" id="backToMenu">返回菜单</button>
             </div>
         </div>
     </div>

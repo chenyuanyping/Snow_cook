@@ -2,48 +2,18 @@
 const menuData = [
     {
         id: 1,
-        name: "宫保鸡丁",
-        description: "经典川菜，鸡肉嫩滑，花生酥脆，酸甜微辣",
-        category: "热菜"
-    },
-    {
-        id: 2,
-        name: "麻婆豆腐",
-        description: "四川名菜，豆腐嫩滑，麻辣鲜香",
-        category: "热菜"
-    },
-    {
-        id: 3,
         name: "糖醋排骨",
         description: "酸甜可口，肉质鲜美，老少皆宜",
         category: "热菜"
     },
     {
-        id: 4,
+        id: 2,
         name: "蒸蛋羹",
         description: "嫩滑如丝，营养丰富，适合老人小孩",
         category: "汤品"
     },
     {
-        id: 5,
-        name: "白切鸡",
-        description: "清淡爽口，肉质鲜嫩，配特制蘸料",
-        category: "凉菜"
-    },
-    {
-        id: 6,
-        name: "西红柿鸡蛋汤",
-        description: "清爽开胃，营养搭配，家常美味",
-        category: "汤品"
-    },
-    {
-        id: 7,
-        name: "红烧肉",
-        description: "肥瘦相间，色泽红润，入口即化",
-        category: "热菜"
-    },
-    {
-        id: 8,
+        id: 3,
         name: "凉拌黄瓜",
         description: "清脆爽口，解腥去腻，开胃小菜",
         category: "凉菜"
@@ -81,6 +51,10 @@ const addToCart = document.getElementById('addToCart');
 const orderSummary = document.getElementById('orderSummary');
 const orderNotes = document.getElementById('orderNotes');
 const confirmOrder = document.getElementById('confirmOrder');
+
+// Cook 界面元素
+const cookScreen = document.getElementById('cookScreen');
+const backToMenu = document.getElementById('backToMenu');
 
 // 当前选择的菜品
 let currentDish = null;
@@ -273,15 +247,32 @@ function submitOrderData() {
     // 这里可以发送订单到服务器
     console.log('订单数据:', orderData);
     
-    // 模拟订单提交成功
-    alert(`订单提交成功！\n订单号: ${Date.now()}\n已保存到页面！`);
-    
     // 清空购物车
     cart = [];
     renderCart();
     closeModals();
     
-    showSuccessMessage('订单提交成功！已保存到页面。');
+    // 跳转到 Cook 界面
+    showCookScreen();
+}
+
+// 显示 Cook 界面
+function showCookScreen() {
+    cookScreen.style.display = 'flex';
+    
+    // 5秒后自动显示返回按钮
+    setTimeout(() => {
+        backToMenu.style.opacity = '1';
+        backToMenu.style.transform = 'translateY(0)';
+    }, 5000);
+}
+
+// 隐藏 Cook 界面，返回菜单
+function hideCookScreen() {
+    cookScreen.style.display = 'none';
+    backToMenu.style.opacity = '0';
+    backToMenu.style.transform = 'translateY(20px)';
+    showSuccessMessage('订单提交成功！Snow 大厨正在精心制作您的美食 💕');
 }
 
 // 设置事件监听器
@@ -308,10 +299,16 @@ function setupEventListeners() {
     submitOrder.addEventListener('click', openOrderModal);
     confirmOrder.addEventListener('click', submitOrderData);
     
+    // Cook 界面返回按钮
+    backToMenu.addEventListener('click', hideCookScreen);
+    
     // 键盘快捷键
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeModals();
+            if (cookScreen.style.display === 'flex') {
+                hideCookScreen();
+            }
         }
     });
 }
