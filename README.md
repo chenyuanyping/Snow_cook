@@ -88,29 +88,102 @@ cook_web/
 - Safari 12+
 - Edge 79+
 
-## 部署
+## 🚀 部署到互联网
 
-### 静态网站托管
-可以部署到任何静态网站托管服务：
-- GitHub Pages
-- Netlify
-- Vercel
-- 阿里云OSS
-- 腾讯云COS
+### 方案一：GitHub Pages（免费推荐）
 
-### 服务器部署
+1. **创建 GitHub 仓库**
+   - 登录 [GitHub.com](https://github.com)
+   - 点击 "New repository"
+   - 仓库名称：`cook-web` 或任意名称
+   - 设为 Public，勾选 "Add a README file"
+
+2. **上传代码**
+   ```bash
+   # 关联远程仓库（替换为你的仓库地址）
+   git remote add origin https://github.com/你的用户名/cook-web.git
+   
+   # 推送代码
+   git branch -M main
+   git push -u origin main
+   ```
+
+3. **启用 GitHub Pages**
+   - 进入仓库的 Settings 页面
+   - 找到 "Pages" 选项
+   - Source 选择 "Deploy from a branch"
+   - Branch 选择 "main"，文件夹选择 "/ (root)"
+   - 点击 Save
+
+4. **访问网站**
+   - 几分钟后访问：`https://你的用户名.github.io/cook-web`
+
+### 方案二：Netlify（免费，支持拖放）
+
+1. **访问 [Netlify.com](https://netlify.com)**
+2. **注册/登录账号**
+3. **部署方式任选其一：**
+
+   **A. 拖放部署（最简单）**
+   - 将整个 `cook_web` 文件夹压缩成 zip
+   - 直接拖放到 Netlify 部署区域
+   
+   **B. Git 部署**
+   - 点击 "New site from Git"
+   - 选择 GitHub，授权 Netlify 访问
+   - 选择你的仓库
+   - 自动部署
+
+4. **自定义域名（可选）**
+   - 在站点设置中可以修改子域名
+   - 如：`my-cook-app.netlify.app`
+
+### 方案三：Vercel（免费，极快部署）
+
+1. **访问 [Vercel.com](https://vercel.com)**
+2. **使用 GitHub 登录**
+3. **导入项目**
+   - 点击 "New Project"
+   - 选择你的 GitHub 仓库
+   - 点击 Deploy
+
+### 方案四：Gitee Pages（国内访问快）
+
+1. **将代码推送到 [Gitee.com](https://gitee.com)**
+2. **启用 Gitee Pages 服务**
+3. **访问 `https://你的用户名.gitee.io/仓库名`**
+
+### 方案五：服务器部署
+
 ```bash
-# 复制文件到服务器
-scp -r cook_web/ user@server:/var/www/html/
+# 上传到服务器
+scp -r cook_web/ user@your-server.com:/var/www/html/
 
-# 配置 Nginx (示例)
+# Nginx 配置示例
 server {
     listen 80;
     server_name your-domain.com;
     root /var/www/html/cook_web;
     index index.html;
+    
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
 }
 ```
+
+### 🎯 推荐方案对比
+
+| 平台 | 优势 | 访问速度 | 难度 |
+|------|------|----------|------|
+| **GitHub Pages** | 完全免费，与代码集成 | 国外快 | ⭐⭐ |
+| **Netlify** | 功能强大，支持表单 | 全球快 | ⭐ |
+| **Vercel** | 部署极快，性能优秀 | 全球快 | ⭐ |
+| **Gitee Pages** | 国内访问快 | 国内快 | ⭐⭐ |
+
+**最简单**：Netlify 拖放部署  
+**最推荐**：GitHub Pages（学习 Git）  
+**国内用户**：Gitee Pages
 
 ## 自定义修改
 
